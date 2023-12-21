@@ -8,8 +8,8 @@ export default class Publisher {
     qos: number | undefined;
     message_type: string | undefined;
 
-    constructor(topic: string, qos: number, message_type: string) {
-        this.mqtt_client = new MqttClient();
+    constructor(mqtt_client: MqttClient, topic: string, qos: number, message_type: string) {
+        this.mqtt_client = mqtt_client;
         this.mqtt_register_publisher_topic = 'net/wavem/robotics/rt/register/publisher';
 
         this.topic = topic;
@@ -23,22 +23,6 @@ export default class Publisher {
         };
 
         this.mqtt_client!.publish(this.mqtt_register_publisher_topic!, JSON.stringify(publisher_json));
-    }
-
-    public create_publisher(topic: string, qos: number, message_type: string): Publisher {
-        this.topic = topic;
-        this.qos = qos;
-        this.message_type = message_type;
-        
-        const publisher_json: any = {
-            topic,
-            qos,
-            message_type
-        };
-
-        this.mqtt_client!.publish(this.mqtt_register_publisher_topic!, JSON.stringify(publisher_json));
-
-        return this;
     }
 
     public publish(message: any): void {

@@ -1,13 +1,15 @@
 import * as rclnodejs from 'rclnodejs';
 import Publisher from './ros/publisher';
+import Node from './ros/node';
 
 async function example() {
 
   await rclnodejs.init();
   let node = rclnodejs.createNode('MyNode');
 
-  const publisher: Publisher = new Publisher('chatter', 1, 'std_msgs.msg.String');
-  const t_publisher: Publisher = new Publisher('tester', 1, 'sensor_msgs.msg.LaserScan');
+  const m_node: Node = new Node('rmclnodejs');
+  const publisher: Publisher = m_node.create_publisher('chatter', 1, 'std_msgs/msg/String');
+  const t_publisher: Publisher = m_node.create_publisher('tester', 1, 'sensor_msgs/msg/LaserScan');
   
   node.createTimer(1000, () => {
     const message: any = {
