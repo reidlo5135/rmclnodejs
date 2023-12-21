@@ -13,9 +13,11 @@
     "generate-messages": "node_modules/.bin/generate-ros-messages"
   },
   "dependencies": {
+    "mqtt": "^5.3.3",
     "rclnodejs": "^0.23.3"
   },
   "devDependencies": {
+    "@types/mqtt": "^2.5.0",
     "@types/node": "^18.15.0",
     "nodemon": "^2.0.21",
     "ts-node": "^10.9.0",

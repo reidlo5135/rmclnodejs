@@ -1,26 +1,30 @@
 import * as rclnodejs from 'rclnodejs';
+import Publisher from './ros/publisher';
 
-// Create a node that publishes a msg to the topic 'foo' every 1 second.
-// View the topic from the ros2 commandline as shown below:
-//     ros2 topic echo foo std_msgs/msg/String
 async function example() {
 
   await rclnodejs.init();
   let node = rclnodejs.createNode('MyNode');
+
+  const publisher: Publisher = new Publisher('chatter', 1, 'std_msgs.msg.String');
+  const t_publisher: Publisher = new Publisher('tester', 1, 'sensor_msgs.msg.LaserScan');
   
-  // Create main working components here, e.g., publisher, subscriber, service, client, action
-  // For example, a publisher sending a msg every 1 sec
-  let publisher = node.createPublisher('std_msgs/msg/String', 'foo');
-  let cnt = 0;
-  let msg = rclnodejs.createMessageObject('std_msgs/msg/String');
   node.createTimer(1000, () => {
-    msg.data = `msg: ${cnt += 1}`
-    publisher.publish(msg);
+    const message: any = {
+      "data": "rmclnodejs"
+    }
+
+    publisher.publish(message);
+
+    const t_message: any = {
+      "angle_min": 0.5,
+      "angle_max": 0.7
+    }
+
+    t_publisher.publish(t_message);
   });
 
   node.spin();
-
-  console.log('Use this command to view the node\'s published messages: ros2 topic echo foo std_msgs/msg/String');
 }
 
 (async function main(): Promise<void> {
